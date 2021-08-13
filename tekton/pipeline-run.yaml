@@ -1,0 +1,25 @@
+---
+apiVersion: tekton.dev/v1beta1
+kind: PipelineRun
+metadata:
+  generateName: express-app-one-pipeline-run-
+spec:
+  params:
+    - name: source-repo
+      value: https://github.com/cloud-native-garage-method-cohort/apac-3-grp-2-app-frontend
+    - name: image-repo
+      value: quay.io/arief_hidayat/apac-3-grp-2-feedback-frontend-service
+    - name: app-name
+      value: feedback-frontend
+  serviceAccountName: build-bot
+  pipelineRef:
+    name: nodejs-pipeline
+  workspaces:
+    - name: pipeline-shared-data
+      volumeClaimTemplate:
+        spec:
+          accessModes:
+            - ReadWriteOnce
+          resources:
+            requests:
+              storage: 1Gi
