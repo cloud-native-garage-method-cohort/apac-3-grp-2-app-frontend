@@ -1,0 +1,63 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    app.openshift.io/vcs-ref: f7580aa1eb6f7176705176e201ecff4de93edafb
+    app.openshift.io/vcs-uri: https://github.com/upslopeio/express-sample-app
+  labels:
+    app: apac-3-cngm-project-php
+    app.kubernetes.io/instance: apac-3-cngm-project-php-instance
+    app.kubernetes.io/name: apac-3-cngm-project-php
+    app.openshift.io/runtime: js
+  name: apac-3-cngm-project-php
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/instance: apac-3-cngm-project-php-instance
+      app.kubernetes.io/name: apac-3-cngm-project-php
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/instance: apac-3-cngm-project-php-instance
+        app.kubernetes.io/name: apac-3-cngm-project-php
+    spec:
+      containers:
+        - image: quay.io/arief_hidayat/apac-3-grp-2-feedback-frontend-service:0.0.3
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            failureThreshold: 10
+            initialDelaySeconds: 15
+            httpGet:
+              path: /
+              port: 8080
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          name: apac-3-cngm-project-php
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            failureThreshold: 10
+            initialDelaySeconds: 15
+            httpGet:
+              path: /
+              port: http
+              scheme: HTTP
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          resources: {}
+          terminationMessagePath: /dev/termination-log
+          terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      terminationGracePeriodSeconds: 30

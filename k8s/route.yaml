@@ -1,0 +1,15 @@
+apiVersion: route.openshift.io/v1
+kind: Route
+metadata:
+  annotations:
+    argocd.argoproj.io/sync-options: Validate=false
+    openshift.io/host.generated: "true"
+  name: apac-3-cngm-project-php
+spec:
+  tls:
+    termination: edge
+  to:
+    kind: Service
+    name: apac-3-cngm-project-php
+    weight: 100
+  wildcardPolicy: None

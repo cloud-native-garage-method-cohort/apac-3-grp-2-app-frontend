@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: apac-3-cngm-project-php
+    app.kubernetes.io/instance: apac-3-cngm-project-php-instance
+    app.kubernetes.io/name: apac-3-cngm-project-php
+  name: apac-3-cngm-project-php
+spec:
+  ports:
+    - name: http
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app.kubernetes.io/instance: apac-3-cngm-project-php-instance
+    app.kubernetes.io/name: apac-3-cngm-project-php
+  sessionAffinity: None
+  type: ClusterIP

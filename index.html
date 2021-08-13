@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Feedbacks</title>
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script>
+$(document).ready(function(){
+    var url = "https://grp-2-feedback-backend-service-grp-2-prod.ibmcloud-roks-8s3d9-8946bbc006b7c6eb0829d088919818bb-0000.hkg02.containers.appdomain.cloud/feedbacks";
+    
+    $( "#feedback-submission-btn" ).click(function( event ) {
+        event.preventDefault();
+        $.ajax({
+            type: "POST",
+            url: url,
+            data: {
+                feedback: $("#feedback-message").val()
+            },
+            success: function(data){
+                $("#load-feedback-btn").click();
+            },
+            dataType: "json"
+        });
+    });
+    $("#load-feedback-btn").click(function(){
+        $.ajax({
+            type: "GET",
+            url: url,
+            data: {},
+            success: function(data){
+                console.log(data);
+                var items = [];
+                $.each(data, function( key, val ) {
+                    items.push( "<li>" + val.feedback + "</li>" );
+                });
+                $("#feedback-list").html(items);
+                },
+            dataType: "json"
+        });
+    });
+});
+</script>
+</head>
+<body>
+    <div id="feedbacks">
+        <h2>Feedbacks</h2>
+        <div>
+            <ul id="feedback-list">
+            </ul>
+        </div>
+    </div> 
+    <button id="load-feedback-btn" type="button">Load Feedbacks</button>
+
+    <form id="feedback-submission-form">
+        <label for="fname">Feedback:</label><br>
+        <input type="text" id="feedback-message" name="feedback" value="...."><br>
+        <input type="submit" id="feedback-submission-btn" value="Submit Feedback">
+      </form>
+</body>
+</html>
